@@ -1,3 +1,7 @@
+/****************************************************/
+/******************* DEFINICIONES *******************/
+/****************************************************/
+
 // Añadir la clave de acceso para conectarte a la API de Mapbox
 mapboxgl.accessToken = 'pk.eyJ1IjoicnVpemd1aWxsZSIsImEiOiJjanp1ZTc1ZWkwMmh3M2JtcjBianl6enljIn0.iCxrQZrJESdTCUt_czePPg';
 
@@ -9,17 +13,30 @@ var mapasBase = [
 ];
 var idMapaBaseActual = 0;
 
-/* MAIN */
-// Crear un mapa en el div con id='mapa', definiendo el estilo, centro y nivel de zoom
+
+/****************************************************/
+/*********************** MAIN ***********************/
+/****************************************************/
+
+// Crear el mapa
 var mapa = new mapboxgl.Map({
-  container: 'mapa',
-  style: mapasBase[idMapaBaseActual],
-  center: [-4.429971, 36.716775],
-	zoom: 13.2,
+  container: 'mapa', // el elemento HTML con id='mapa' es el contenedor del mapa
+  style: mapasBase[idMapaBaseActual], // estilo del mapa base inicial
+  center: [-4.429971, 36.716775], // coordenadas [lng, lat] del centro inicial
+	zoom: 13.2, // nivel de zoom inicial
 });
 
 // Añadir controles de zoom y rotación
 mapa.addControl(new mapboxgl.NavigationControl());
+
+// Añadir buscador geográfico
+mapa.addControl(new MapboxGeocoder({
+	accessToken: mapboxgl.accessToken,
+	mapboxgl: mapboxgl,
+	collapsed: true,
+	language: 'es',
+	placeholder: 'Buscar'
+}), 'top-right');
 
 // Añadir event listener a botón de cambio de estilo de mapa
 var btnMapaBase = document.getElementById('btnMapaBase');
@@ -38,7 +55,9 @@ for (var i = 0; i < inputs.length; i++) {
 }
 
 
-/* FUNCIONES */
+/****************************************************/
+/******************** FUNCIONES *********************/
+/****************************************************/
 function cambiarMapaBase() {
 	idMapaBaseActual = (idMapaBaseActual + 1) % mapasBase.length;
 	mapa.setStyle(mapasBase[idMapaBaseActual]);
@@ -170,3 +189,4 @@ function cargarPopups() {
 		mapa.getCanvas().style.cursor = '';
 	});
 }
+/****************************************************/
