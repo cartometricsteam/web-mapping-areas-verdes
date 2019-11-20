@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Áreas verdes y reciclaje en Málaga</title>
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet'/>
+	<script src="https://kit.fontawesome.com/62f4d8f9b6.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="areasVerdes.css"/>
+</head>
+<body>
+	<div id='mapa'></div>
+	<button id='btnMapaBase'>
+		<i class="fas fa-layer-group fa-lg"></i>
+	</button>
+	<div id='menu'>
+		<h1>Selector de capas</h1>
+		<div>
+			<input type='checkbox' name='areasVerdes' checked='checked'>
+			<label for='areasVerdes'>Áreas verdes</label>
+		</div>
+		<div>
+			<input type='checkbox' name='contenedoresPlasticos' checked='checked'>
+			<label for='plasticos'>Contenedores de plásticos</label>
+		</div>
+		<div>
+			<input type='checkbox' name='contenedoresPapel' checked='checked'>
+			<label for='papel'>Contenedores de papel</label>
+		</div>
+	</div>
+	<div id='leyenda'>
+		<h1>Leyenda</h1>
+		<div>
+			<div class='cuadrado zonas-verdes'></div>
+			<span>Áreas verdes</span>
+		</div>
+		<div>
+			<div class='circulo plasticos'></div>
+			<span>Contenedores de plásticos</span>
+		</div>
+		<div>
+			<div class='circulo papel'></div>
+			<span>Contenedores de papel</span>
+		</div>
+	</div>
+	<script type="text/javascript" src="areasVerdes.js"></script>
+</body>
+</html>
