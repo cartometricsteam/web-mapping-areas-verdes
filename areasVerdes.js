@@ -3,13 +3,12 @@
 /****************************************************/
 
 // Añadir la clave de acceso para conectarte a la API de Mapbox
-mapboxgl.accessToken = 'pk.eyJ1IjoicnVpemd1aWxsZSIsImEiOiJjanp1ZTc1ZWkwMmh3M2JtcjBianl6enljIn0.iCxrQZrJESdTCUt_czePPg';
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2FydG9tZXRyaWNzbGFiIiwiYSI6ImNrM2JnanIzMjBsZHQzbW1yM2h2OWxieHMifQ.MCULumHFKyTPrBNEETSBww';
 
 // Definición de variables
 var mapasBase = [
-	'mapbox://styles/mapbox/streets-v11',
-	'mapbox://styles/mapbox/satellite-v9',
-	'mapbox://styles/mapbox/navigation-guidance-night-v4'
+	'mapbox://styles/cartometricslab/ck3gxkdjc0fly1cljd1s04f1k',
+	'mapbox://styles/cartometricslab/ck3ifqapy1whh1dpg2goqdyll'
 ];
 var idMapaBaseActual = 0;
 
@@ -38,20 +37,19 @@ mapa.addControl(new MapboxGeocoder({
 	placeholder: 'Buscar'
 }), 'top-right');
 
-// Añadir event listener a botón de cambio de estilo de mapa
+// Añadir event listener a botón de cambio de mapa base
 var btnMapaBase = document.getElementById('btnMapaBase');
 btnMapaBase.addEventListener('click', cambiarMapaBase);
 
-// Cargar las capas y popups una vez cargue el mapa
+// Cargar popups una vez cargue el mapa
 mapa.on('load', function () {
-	cargarCapas();
 	cargarPopups();
 });
 
 var menu = document.getElementById('menu');
 var inputs = menu.getElementsByTagName('input');
 for (var i = 0; i < inputs.length; i++) {
-	inputs[i].addEventListener('click', toggleLayer);
+	inputs[i].addEventListener('click', seleccionarCapa);
 }
 
 
@@ -61,58 +59,9 @@ for (var i = 0; i < inputs.length; i++) {
 function cambiarMapaBase() {
 	idMapaBaseActual = (idMapaBaseActual + 1) % mapasBase.length;
 	mapa.setStyle(mapasBase[idMapaBaseActual]);
-	mapa.once('styledata', function() {
-		cargarCapas();
-	});
 }
 
-function cargarCapas() {	
-	mapa.addLayer({
-		"id": 'areasVerdes',
-		"type": 'fill',
-		"source": {
-			type: 'vector',
-			url: 'mapbox://ruizguille.1g1k4d7d'
-		},
-		"source-layer": 'areas-verdes-23y8qh',
-		'paint': {
-			'fill-color': '#15664B',
-			'fill-opacity': 0.7
-		}
-	});
-
-	mapa.addLayer({
-		"id": 'contenedoresPlasticos',
-		"type": 'circle',
-		"source": {
-			type: 'vector',
-			url: 'mapbox://ruizguille.cu9rv89s'
-		},
-		"source-layer": 'contenedores-plasticos-2hm48v',
-    'paint': {
-      'circle-radius': 5,
-      'circle-color': '#FDFF31',
-      'circle-opacity': 0.85
-    }
-	});
-
-	mapa.addLayer({
-		"id": 'contenedoresPapel',
-		"type": 'circle',
-		"source": {
-			type: 'vector',
-			url: 'mapbox://ruizguille.bqo5yv5j'
-		},
-		"source-layer": 'contenedores-papel-7er4oe',
-    'paint': {
-      'circle-radius': 5,
-      'circle-color': '#397DED',
-      'circle-opacity': 0.9
-    }
-	});
-}
-
-function toggleLayer(event) {
+function seleccionarCapa(event) {
 	var layerId = event.target.name;
 	if(event.target.checked) {
 		mapa.setLayoutProperty(layerId, 'visibility', 'visible');
@@ -124,7 +73,7 @@ function toggleLayer(event) {
 function cargarPopups() {
 	/* ÁREAS VERDES */
 	// Añadir Popup al hacer click sobre Área Verde
-	mapa.on('click', 'areasVerdes', function (e) {
+	mapa.on('click', 'areasverdes-du9lmn', function (e) {
 		var coordinates = e.lngLat;
 		var idAreaVerde = e.features[0].properties.ID_AREAVERDE;
 		var ubicacion = e.features[0].properties.UBICACION;
@@ -136,18 +85,18 @@ function cargarPopups() {
 			.addTo(mapa);
 	});
 
-	// Cambiar el cursor del ratón al pasar por encima / salir de un área verde
-	mapa.on('mouseenter', 'areasVerdes', function () {
+	// Cambiar el cursor del ratón al pasar por encima / salir de área verde
+	mapa.on('mouseenter', 'areasverdes-du9lmn', function () {
 		mapa.getCanvas().style.cursor = 'pointer';
 	});
 
-	mapa.on('mouseleave', 'areasVerdes', function () {
+	mapa.on('mouseleave', 'areasverdes-du9lmn', function () {
 		mapa.getCanvas().style.cursor = '';
 	});
 
 	/* CONTENEDORES DE PLÁSTICO */
 	// Añadir Popup al hacer click sobre un contenedor de plástico
-	mapa.on('click', 'contenedoresPlasticos', function (e) {
+	mapa.on('click', 'contenedores-4gwn1r', function (e) {
 		var coordinates = e.lngLat;
 		var details = e.features[0].properties.tooltip;
 		var popupContent = '<h1>CONTENEDOR PLÁSTICO</h1><div>'+ details +'</div>'
@@ -159,17 +108,17 @@ function cargarPopups() {
 	});
 
 	// Cambiar el cursor del ratón al pasar por encima / salir de un contenedor de plástico
-	mapa.on('mouseenter', 'contenedoresPlasticos', function () {
+	mapa.on('mouseenter', 'contenedores-4gwn1r', function () {
 		mapa.getCanvas().style.cursor = 'pointer';
 	});
 
-	mapa.on('mouseleave', 'contenedoresPlasticos', function () {
+	mapa.on('mouseleave', 'contenedores-4gwn1r', function () {
 		mapa.getCanvas().style.cursor = '';
 	});
 
 	/* CONTENEDORES DE PAPEL */
 	// Añadir Popup al hacer click sobre un contenedor de papel
-	mapa.on('click', 'contenedoresPapel', function (e) {
+	mapa.on('click', 'papelcarton-8fck6u', function (e) {
 		var coordinates = e.lngLat;
 		var details = e.features[0].properties.tooltip;
 		var popupContent = '<h1>CONTENEDOR PAPEL</h1><div>'+ details +'</div>'
@@ -181,11 +130,11 @@ function cargarPopups() {
 	});
 
 	// Cambiar el cursor del ratón al pasar por encima / salir de un contenedor de papel
-	mapa.on('mouseenter', 'contenedoresPapel', function () {
+	mapa.on('mouseenter', 'papelcarton-8fck6u', function () {
 		mapa.getCanvas().style.cursor = 'pointer';
 	});
 
-	mapa.on('mouseleave', 'contenedoresPapel', function () {
+	mapa.on('mouseleave', 'papelcarton-8fck6u', function () {
 		mapa.getCanvas().style.cursor = '';
 	});
 }

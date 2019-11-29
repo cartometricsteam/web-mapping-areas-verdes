@@ -63,15 +63,15 @@ body {
 }
 
 #leyenda .zonas-verdes {
-	background-color: #15664B;
+	background-color: #207f06;
 }
 
 #leyenda .plasticos {
-	background-color: #FDFF31;
+	background-color: #ffe20a;
 }
 
 #leyenda .papel {
-	background-color: #397DED;
+	background-color: #0a6cff;
 }
 
 /* Mapbox Popup */
