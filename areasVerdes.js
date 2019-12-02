@@ -11,6 +11,8 @@ var mapasBase = [
 	'mapbox://styles/cartometricslab/ck3ifqapy1whh1dpg2goqdyll'
 ];
 var idMapaBaseActual = 0;
+var nombresCapas = ['Áreas verdes', 'Contenedores de plástico', 'Contenedores de papel'];
+var colores = ['#207f06', '#ffe20a', '#0a6cff'];
 
 
 /****************************************************/
@@ -41,17 +43,33 @@ mapa.addControl(new MapboxGeocoder({
 var btnMapaBase = document.getElementById('btnMapaBase');
 btnMapaBase.addEventListener('click', cambiarMapaBase);
 
-// Cargar popups una vez cargue el mapa
-mapa.on('load', function () {
-	cargarPopups();
-});
+// Añadir leyenda
+var leyenda = document.getElementById('leyenda');
+for (i = 0; i < nombresCapas.length; i++) {
+  var elemento = document.createElement('div');
+  var cuadrado = document.createElement('span');
+  cuadrado.className = 'cuadrado';
+  cuadrado.style.backgroundColor = colores[i];
+  var etiqueta = document.createElement('span');
+  etiqueta.className = 'etiqueta';
+  etiqueta.innerHTML = nombresCapas[i];
+  elemento.appendChild(cuadrado);
+  elemento.appendChild(etiqueta);
+  leyenda.appendChild(elemento);
+}
 
+
+// Añadir menú selector de capas
 var menu = document.getElementById('menu');
 var inputs = menu.getElementsByTagName('input');
 for (var i = 0; i < inputs.length; i++) {
 	inputs[i].addEventListener('click', seleccionarCapa);
 }
 
+// Cargar popups una vez cargue el mapa
+mapa.on('load', function () {
+	cargarPopups();
+});
 
 /****************************************************/
 /******************** FUNCIONES *********************/
