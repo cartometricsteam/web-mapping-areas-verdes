@@ -58,6 +58,7 @@ body {
 
 #leyenda .etiqueta {
 	vertical-align: top;
+	font-size: .9rem;
 }
 
 /* Mapbox Popup */
